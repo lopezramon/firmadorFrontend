@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -15,11 +15,22 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import useAxios from 'axios-hooks'
 
 const Login = () => {
+  const [{ data, loading, error }, execute] = useAxios(
+    {
+      url: '/auth/login',
+      method: 'POST',
+    },
+    { manual: true },
+  )
+
+  const navigate = useNavigate()
+
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
+    email: 'kminchelle',
+    password: '0lelplR',
   })
 
   const handleInputChange = (e) => {
@@ -30,13 +41,22 @@ const Login = () => {
     })
   }
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     // Prepare the data for the POST request
     const data = {
-      email: formData.email,
+      username: formData.email,
       password: formData.password,
     }
 
+    try {
+      const { data: response } = await execute({ data })
+      localStorage.setItem('token', response.token)
+      navigate('/dashboard')
+    } catch (error) {
+      console.log(error)
+    }
+
+    /*
     // Make a POST request to your API
     fetch('http://localhost/api/login', {
       method: 'POST',
@@ -76,7 +96,10 @@ const Login = () => {
         // Se produjo un error de red
         console.log('Error de peticion')
       })
+      */
   }
+
+  if (error) return <p>Error!</p>
 
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
