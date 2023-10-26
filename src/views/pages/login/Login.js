@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import {
   CButton,
@@ -17,6 +17,67 @@ import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 
 const Login = () => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+  })
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData({
+      ...formData,
+      [name]: value,
+    })
+  }
+
+  const handleLogin = () => {
+    // Prepare the data for the POST request
+    const data = {
+      email: formData.email,
+      password: formData.password,
+    }
+
+    // Make a POST request to your API
+    fetch('http://localhost/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        if (response.ok) {
+          // La solicitud fue exitosa
+          response.json().then((data) => {
+            console.log(data)
+          })
+        } else {
+          // La solicitud falló
+          switch (response.status) {
+            case 401:
+              // El usuario no está autenticado
+              console.log('El usuario no está autenticado')
+              break
+            case 500:
+              // Error interno del servidor
+              console.log('Error interno del servidor')
+              break
+            case 422:
+              // Error interno del servidor
+              console.log('Error interno del credencial')
+              break
+            default:
+              // Otro error
+              console.log('Error desconocido')
+          }
+        }
+      })
+      .catch((error) => {
+        // Se produjo un error de red
+        console.log('Error de peticion')
+      })
+  }
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -32,7 +93,13 @@ const Login = () => {
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Username" autoComplete="username" />
+                      <CFormInput
+                        name="email"
+                        placeholder="Email"
+                        autoComplete="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                      />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
@@ -40,13 +107,16 @@ const Login = () => {
                       </CInputGroupText>
                       <CFormInput
                         type="password"
+                        name="password"
                         placeholder="Password"
                         autoComplete="current-password"
+                        value={formData.password}
+                        onChange={handleInputChange}
                       />
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4">
+                        <CButton color="primary" className="px-4" onClick={handleLogin}>
                           Login
                         </CButton>
                       </CCol>
