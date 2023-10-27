@@ -20,7 +20,7 @@ import useAxios from 'axios-hooks'
 const Login = () => {
   const [{ data, loading, error }, execute] = useAxios(
     {
-      url: '/auth/login',
+      url: '/login',
       method: 'POST',
     },
     { manual: true },
@@ -29,8 +29,8 @@ const Login = () => {
   const navigate = useNavigate()
 
   const [formData, setFormData] = useState({
-    email: 'kminchelle',
-    password: '0lelplR',
+    email: 'elopez@team.com',
+    password: 'zK329upx$',
   })
 
   const handleInputChange = (e) => {
@@ -44,13 +44,13 @@ const Login = () => {
   const handleLogin = async () => {
     // Prepare the data for the POST request
     const data = {
-      username: formData.email,
+      email: formData.email,
       password: formData.password,
     }
 
     try {
       const { data: response } = await execute({ data })
-      localStorage.setItem('token', response.token)
+      localStorage.setItem('token', response.data.token)
       navigate('/dashboard')
     } catch (error) {
       console.log(error)

@@ -1,4 +1,6 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import useAxios from 'axios-hooks'
 import {
   CAvatar,
   CBadge,
@@ -21,10 +23,28 @@ import {
   cilUser,
 } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-
 import avatar8 from './../../assets/images/avatars/8.jpg'
 
 const AppHeaderDropdown = () => {
+  const [{ data, loading, error }, execute] = useAxios(
+    {
+      url: '/logout',
+      method: 'POST',
+    },
+    { manual: true },
+  )
+  const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    try {
+      await execute()
+      localStorage.setItem('token', null)
+      navigate('/')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <CDropdown variant="nav-item">
       <CDropdownToggle placement="bottom-end" className="py-0" caret={false}>
@@ -84,7 +104,7 @@ const AppHeaderDropdown = () => {
           </CBadge>
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem href="#">
+        <CDropdownItem onClick={handleLogout}>
           <CIcon icon={cilLockLocked} className="me-2" />
           Lock Account
         </CDropdownItem>
