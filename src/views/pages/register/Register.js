@@ -30,8 +30,8 @@ const Register = () => {
   const [formData, setFormData] = useState({
     name: 'Euglis Lopez',
     email: 'elopez@avanzf.cl',
-    password: 'zK329upx$',
-    password_confirmation: 'zK329upx$',
+    password: '',
+    password_confirmation: '',
   })
 
   const handleInputChange = (e) => {
