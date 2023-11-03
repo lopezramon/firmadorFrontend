@@ -15,6 +15,8 @@ import {
   CTableHeaderCell,
   CTableRow,
   CButton,
+  CPagination,
+  CPaginationItem,
 } from '@coreui/react'
 
 const Tables = () => {
@@ -33,7 +35,7 @@ const Tables = () => {
   useEffect(() => {
     async function fetchOrganizations() {
       const response = await execute()
-      console.log(response.data.data.data)
+      console.log(response.data.data)
       setOrganizations(response.data.data.data)
     }
     fetchOrganizations()
@@ -127,6 +129,13 @@ const Tables = () => {
               </CTable>
             )}
             {!loading && organizations.length === 0 && <p>No organizations found.</p>}
+            <CPagination align="end" aria-label="Page navigation example">
+              <CPaginationItem disabled>Previous</CPaginationItem>
+              <CPaginationItem>1</CPaginationItem>
+              <CPaginationItem>2</CPaginationItem>
+              <CPaginationItem>3</CPaginationItem>
+              <CPaginationItem>Next</CPaginationItem>
+            </CPagination>
           </CCardBody>
         </CCard>
       </CCol>
