@@ -22,11 +22,11 @@ import CIcon from '@coreui/icons-react'
 import { cilPencil, cilDelete } from '@coreui/icons'
 
 const Tables = () => {
-  const [organizations, setOrganizations] = useState([])
-  const [organization, setOrganization] = useState({})
+  const [firms, setFirms] = useState([])
+  const [firm, setFirm] = useState({})
   const [{ data, loading, error }, execute] = useAxios(
     {
-      url: '/organizations?include=user',
+      url: '/firms?include=firm',
       method: 'GET',
     },
     { manual: true },
@@ -35,42 +35,42 @@ const Tables = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    async function fetchOrganizations() {
+    async function fetchFirms() {
       const response = await execute()
-      setOrganizations(response.data.data.data)
+      setFirms(response.data.data.data)
     }
-    fetchOrganizations()
+    fetchFirms()
   }, [])
 
   const handleResponse = () => {
     if (!error) {
-      setOrganizations(data)
+      setFirms(data)
     } else {
       console.log(error)
     }
   }
 
   const handleCreate = () => {
-    navigate('/organizations/new')
-    const newOrganization = {
+    navigate('/firms/new')
+    const newFirm = {
       name: '',
       description: '',
     }
-    setOrganization(newOrganization)
+    setFirm(newFirm)
   }
 
-  const handleEdit = (organization) => {
-    setOrganization(organization)
+  const handleEdit = (firm) => {
+    setFirm(firm)
   }
 
   const handleSave = async () => {
-    const newOrganization = {
-      ...organization,
+    const newFirm = {
+      ...firm,
     }
     const response = await execute({
-      url: '/organizations',
-      method: organization.id ? 'PUT' : 'POST',
-      data: newOrganization,
+      url: '/firms',
+      method: firm.id ? 'PUT' : 'POST',
+      data: newFirm,
     })
     handleResponse()
   }
@@ -78,7 +78,7 @@ const Tables = () => {
   const handleDelete = async (id) => {
     try {
       const response = await execute({
-        url: `/organizations/${id}`,
+        url: `/firms/${id}`,
         method: 'DELETE',
       })
       handleResponse()
@@ -99,41 +99,37 @@ const Tables = () => {
           </CCardHeader>
           <CCardBody>
             {loading && <p>Loading...</p>}
-            {!loading && organizations.length > 0 && (
+            {!loading && firms.length > 0 && (
               <CTable responsive>
-                <CTableCaption>List of organizations</CTableCaption>
+                <CTableCaption>List of firms</CTableCaption>
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Rut</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Email</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">User</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Organización</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Sistema</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">status</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">count</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Actions</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {organizations.map((organization) => (
-                    <CTableRow key={organization.id}>
-                      <CTableHeaderCell scope="row">{organization.id}</CTableHeaderCell>
-                      <CTableDataCell>{organization.name}</CTableDataCell>
-                      <CTableDataCell>{organization.rut}</CTableDataCell>
-                      <CTableDataCell>{organization.email}</CTableDataCell>
-                      <CTableDataCell>{organization.user.name}</CTableDataCell>
+                  {firms.map((firm) => (
+                    <CTableRow key={firm.id}>
+                      <CTableHeaderCell scope="row">{firm.id}</CTableHeaderCell>
+                      <CTableDataCell>{firm.user.name}</CTableDataCell>
+                      <CTableDataCell>{firm.sistem}</CTableDataCell>
+                      <CTableDataCell>{firm.status}</CTableDataCell>
+                      <CTableDataCell>{firm.count}</CTableDataCell>
                       <CTableDataCell>
                         <div className="d-grid gap-2 d-md-flex">
-                          <CButton
-                            color="primary"
-                            size="sm"
-                            onClick={() => handleEdit(organization)}
-                          >
+                          <CButton color="primary" size="sm" onClick={() => handleEdit(firm)}>
                             {/* <CIcon icon={cilPencil} customClassName="nav-icon" size={'sm'} /> */}
                             Edit
                           </CButton>
                           <CButton
                             color="secondary"
                             size="sm"
-                            onClick={() => handleDelete(organization.id)}
+                            onClick={() => handleDelete(firm.id)}
                           >
                             {/* <CIcon icon={cilDelete} customClassName="nav-icon" size={'sm'} /> */}
                             Delete
@@ -145,7 +141,7 @@ const Tables = () => {
                 </CTableBody>
               </CTable>
             )}
-            {!loading && organizations.length === 0 && <p>No organizations found.</p>}
+            {!loading && firms.length === 0 && <p>No firms found.</p>}
             <CPagination align="end" aria-label="Page navigation example">
               <CPaginationItem disabled>Previous</CPaginationItem>
               <CPaginationItem>1</CPaginationItem>
