@@ -26,7 +26,7 @@ const Tables = () => {
   const [firm, setFirm] = useState({})
   const [{ data, loading, error }, execute] = useAxios(
     {
-      url: '/firms?include=firm',
+      url: '/firms?include=organization',
       method: 'GET',
     },
     { manual: true },
@@ -37,6 +37,7 @@ const Tables = () => {
   useEffect(() => {
     async function fetchFirms() {
       const response = await execute()
+      console.log(response.data.data.data)
       setFirms(response.data.data.data)
     }
     fetchFirms()
@@ -50,58 +51,30 @@ const Tables = () => {
     }
   }
 
-  const handleCreate = () => {
-    navigate('/firms/new')
-    const newFirm = {
-      name: '',
-      description: '',
-    }
-    setFirm(newFirm)
-  }
-
-  const handleEdit = (firm) => {
-    setFirm(firm)
-  }
-
-  const handleSave = async () => {
-    const newFirm = {
-      ...firm,
-    }
-    const response = await execute({
-      url: '/firms',
-      method: firm.id ? 'PUT' : 'POST',
-      data: newFirm,
-    })
-    handleResponse()
-  }
-
-  const handleDelete = async (id) => {
-    try {
-      const response = await execute({
-        url: `/firms/${id}`,
-        method: 'DELETE',
-      })
-      handleResponse()
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // const handleCreate = () => {
+  //   navigate('/firms/new')
+  //   const newFirm = {
+  //     name: '',
+  //     description: '',
+  //   }
+  //   setFirm(newFirm)
+  // }
 
   return (
     <CRow>
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
-            <strong>Organización</strong>
-            <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+            <strong>Documentos Firmados</strong>
+            {/* <div className="d-grid gap-2 d-md-flex justify-content-md-end">
               <CButton onClick={handleCreate}>Agregar</CButton>
-            </div>
+            </div> */}
           </CCardHeader>
           <CCardBody>
             {loading && <p>Loading...</p>}
             {!loading && firms.length > 0 && (
               <CTable responsive>
-                <CTableCaption>List of firms</CTableCaption>
+                <CTableCaption>Listado de Documentos Firmados</CTableCaption>
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
@@ -116,23 +89,15 @@ const Tables = () => {
                   {firms.map((firm) => (
                     <CTableRow key={firm.id}>
                       <CTableHeaderCell scope="row">{firm.id}</CTableHeaderCell>
-                      <CTableDataCell>{firm.user.name}</CTableDataCell>
+                      <CTableDataCell>{firm.organization.name}</CTableDataCell>
                       <CTableDataCell>{firm.sistem}</CTableDataCell>
                       <CTableDataCell>{firm.status}</CTableDataCell>
                       <CTableDataCell>{firm.count}</CTableDataCell>
                       <CTableDataCell>
                         <div className="d-grid gap-2 d-md-flex">
-                          <CButton color="primary" size="sm" onClick={() => handleEdit(firm)}>
+                          <CButton color="primary" size="sm">
                             {/* <CIcon icon={cilPencil} customClassName="nav-icon" size={'sm'} /> */}
-                            Edit
-                          </CButton>
-                          <CButton
-                            color="secondary"
-                            size="sm"
-                            onClick={() => handleDelete(firm.id)}
-                          >
-                            {/* <CIcon icon={cilDelete} customClassName="nav-icon" size={'sm'} /> */}
-                            Delete
+                            show
                           </CButton>
                         </div>
                       </CTableDataCell>

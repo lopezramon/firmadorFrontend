@@ -101,7 +101,7 @@ const Tables = () => {
             {loading && <p>Loading...</p>}
             {!loading && organizations.length > 0 && (
               <CTable responsive>
-                <CTableCaption>List of organizations</CTableCaption>
+                <CTableCaption>Listado de Organización</CTableCaption>
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
