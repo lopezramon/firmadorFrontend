@@ -29,7 +29,7 @@ const Login = () => {
   const navigate = useNavigate()
 
   const [formData, setFormData] = useState({
-    email: 'elopez@avanzf.cl',
+    email: '',
     password: '',
   })
 

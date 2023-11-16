@@ -18,8 +18,6 @@ import {
   CPagination,
   CPaginationItem,
 } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
-import { cilPencil, cilDelete } from '@coreui/icons'
 
 const Tables = () => {
   const [firms, setFirms] = useState([])
@@ -37,27 +35,17 @@ const Tables = () => {
   useEffect(() => {
     async function fetchFirms() {
       const response = await execute()
-      console.log(response.data.data.data)
       setFirms(response.data.data.data)
     }
     fetchFirms()
   }, [])
 
-  const handleResponse = () => {
-    if (!error) {
-      setFirms(data)
-    } else {
-      console.log(error)
-    }
-  }
-
-  // const handleCreate = () => {
-  //   navigate('/firms/new')
-  //   const newFirm = {
-  //     name: '',
-  //     description: '',
+  // const handleResponse = () => {
+  //   if (!error) {
+  //     setFirms(data)
+  //   } else {
+  //     console.log(error)
   //   }
-  //   setFirm(newFirm)
   // }
 
   return (
@@ -65,7 +53,7 @@ const Tables = () => {
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
-            <strong>Documentos Firmados</strong>
+            <strong>Log Documentos Firmados</strong>
             {/* <div className="d-grid gap-2 d-md-flex justify-content-md-end">
               <CButton onClick={handleCreate}>Agregar</CButton>
             </div> */}
@@ -74,14 +62,14 @@ const Tables = () => {
             {loading && <p>Loading...</p>}
             {!loading && firms.length > 0 && (
               <CTable responsive>
-                <CTableCaption>Listado de Documentos Firmados</CTableCaption>
+                <CTableCaption>Listado de Logs</CTableCaption>
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Organización</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Sistema</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">status</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">count</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Organization</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Id XML</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Tipo Documento</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Fecha Firma</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Actions</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
@@ -89,10 +77,10 @@ const Tables = () => {
                   {firms.map((firm) => (
                     <CTableRow key={firm.id}>
                       <CTableHeaderCell scope="row">{firm.id}</CTableHeaderCell>
-                      <CTableDataCell>{firm.organization.name}</CTableDataCell>
-                      <CTableDataCell>{firm.sistem}</CTableDataCell>
-                      <CTableDataCell>{firm.status}</CTableDataCell>
-                      <CTableDataCell>{firm.count}</CTableDataCell>
+                      <CTableDataCell>{firm.organization_id}</CTableDataCell>
+                      <CTableDataCell>{firm.id_xml}</CTableDataCell>
+                      <CTableDataCell>{firm.document_type}</CTableDataCell>
+                      <CTableDataCell>{firm.date_time}</CTableDataCell>
                       <CTableDataCell>
                         <div className="d-grid gap-2 d-md-flex">
                           <CButton color="primary" size="sm">
@@ -106,7 +94,7 @@ const Tables = () => {
                 </CTableBody>
               </CTable>
             )}
-            {!loading && firms.length === 0 && <p>No firms found.</p>}
+            {!loading && firms.length === 0 && <p>No logs found.</p>}
             <CPagination align="end" aria-label="Page navigation example">
               <CPaginationItem disabled>Previous</CPaginationItem>
               <CPaginationItem>1</CPaginationItem>

@@ -8,6 +8,7 @@ const Typography = React.lazy(() => import('./views/theme/typography/Typography'
 const Organization = React.lazy(() => import('./views/organizations/Tables'))
 const OrganizationForm = React.lazy(() => import('./views/organizations/Form'))
 const Firms = React.lazy(() => import('./views/doctFirm/Tables'))
+const Users = React.lazy(() => import('./views/users/Tables'))
 
 // Base
 const Accordion = React.lazy(() => import('./views/base/accordion/Accordion'))
@@ -66,6 +67,7 @@ const routes = [
     public: false,
   },
   { path: '/firms', name: 'Firms', element: Firms, public: false },
+  { path: '/users', name: 'Users', element: Users, public: false },
   { path: '/theme', name: 'Theme', element: Colors, exact: true },
   { path: '/theme/colors', name: 'Colors', element: Colors, public: true },
   { path: '/theme/typography', name: 'Typography', element: Typography },

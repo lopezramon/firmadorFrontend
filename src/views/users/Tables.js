@@ -18,13 +18,15 @@ import {
   CPagination,
   CPaginationItem,
 } from '@coreui/react'
+import CIcon from '@coreui/icons-react'
+import { cilPencil, cilDelete } from '@coreui/icons'
 
 const Tables = () => {
-  const [organizations, setOrganizations] = useState([])
-  // const [organization, setOrganization] = useState({})
+  const [users, setOrganizations] = useState([])
+  const [user, setOrganization] = useState({})
   const [{ data, loading, error }, execute] = useAxios(
     {
-      url: '/organizations?include=user',
+      url: '/users',
       method: 'GET',
     },
     { manual: true },
@@ -49,34 +51,34 @@ const Tables = () => {
   }
 
   const handleCreate = () => {
-    navigate('/organizations/new')
+    navigate('/users/new')
     const newOrganization = {
       name: '',
       description: '',
     }
-    // setOrganization(newOrganization)
+    setOrganization(newOrganization)
   }
 
-  const handleEdit = (organization) => {
-    // setOrganization(organization)
+  const handleEdit = (user) => {
+    setOrganization(user)
   }
 
-  // const handleSave = async () => {
-  //   const newOrganization = {
-  //     ...organization,
-  //   }
-  //   const response = await execute({
-  //     url: '/organizations',
-  //     method: organization.id ? 'PUT' : 'POST',
-  //     data: newOrganization,
-  //   })
-  //   handleResponse()
-  // }
+  const handleSave = async () => {
+    const newOrganization = {
+      ...user,
+    }
+    const response = await execute({
+      url: '/users',
+      method: user.id ? 'PUT' : 'POST',
+      data: newOrganization,
+    })
+    handleResponse()
+  }
 
   const handleDelete = async (id) => {
     try {
       const response = await execute({
-        url: `/organizations/${id}`,
+        url: `/users/${id}`,
         method: 'DELETE',
       })
       handleResponse()
@@ -90,52 +92,44 @@ const Tables = () => {
       <CCol xs={12}>
         <CCard className="mb-4">
           <CCardHeader>
-            <strong>Organización</strong>
+            <strong>Usuarios</strong>
             <div className="d-grid gap-2 d-md-flex justify-content-md-end">
               <CButton onClick={handleCreate}>Agregar</CButton>
             </div>
           </CCardHeader>
           <CCardBody>
             {loading && <p>Loading...</p>}
-            {!loading && organizations.length > 0 && (
+            {!loading && users.length > 0 && (
               <CTable responsive>
-                <CTableCaption>Listado de Organización</CTableCaption>
+                <CTableCaption>Listado de Usuarios</CTableCaption>
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Rut</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Email</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Status</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Sistem</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">User</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Rol</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Actions</CTableHeaderCell>
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
-                  {organizations.map((organization) => (
-                    <CTableRow key={organization.id}>
-                      <CTableHeaderCell scope="row">{organization.id}</CTableHeaderCell>
-                      <CTableDataCell>{organization.name}</CTableDataCell>
-                      <CTableDataCell>{organization.rut}</CTableDataCell>
-                      <CTableDataCell>{organization.email}</CTableDataCell>
-                      <CTableDataCell>{organization.status}</CTableDataCell>
-                      <CTableDataCell>{organization.sistem}</CTableDataCell>
-                      <CTableDataCell>{organization.user?.name}</CTableDataCell>
+                  {users.map((user) => (
+                    <CTableRow key={user.id}>
+                      <CTableHeaderCell scope="row">{user.id}</CTableHeaderCell>
+                      <CTableDataCell>{user.name}</CTableDataCell>
+                      <CTableDataCell>{user.email}</CTableDataCell>
+                      <CTableDataCell></CTableDataCell>
                       <CTableDataCell>
                         <div className="d-grid gap-2 d-md-flex">
-                          <CButton
-                            color="primary"
-                            size="sm"
-                            onClick={() => handleEdit(organization)}
-                          >
+                          <CButton color="primary" size="sm" onClick={() => handleEdit(user)}>
+                            {/* <CIcon icon={cilPencil} customClassName="nav-icon" size={'sm'} /> */}
                             Edit
                           </CButton>
                           <CButton
                             color="secondary"
                             size="sm"
-                            onClick={() => handleDelete(organization.id)}
+                            onClick={() => handleDelete(user.id)}
                           >
+                            {/* <CIcon icon={cilDelete} customClassName="nav-icon" size={'sm'} /> */}
                             Delete
                           </CButton>
                         </div>
@@ -145,7 +139,7 @@ const Tables = () => {
                 </CTableBody>
               </CTable>
             )}
-            {!loading && organizations.length === 0 && <p>No organizations found.</p>}
+            {!loading && users.length === 0 && <p>No users found.</p>}
             <CPagination align="end" aria-label="Page navigation example">
               <CPaginationItem disabled>Previous</CPaginationItem>
               <CPaginationItem>1</CPaginationItem>

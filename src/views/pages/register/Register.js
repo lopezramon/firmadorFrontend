@@ -28,10 +28,10 @@ const Register = () => {
   const navigate = useNavigate()
 
   const [formData, setFormData] = useState({
-    name: 'Euglis Lopez',
-    email: 'elopez@avanzf.cl',
-    password: 'zK219upx$',
-    password_confirmation: 'zK219upx$',
+    name: '',
+    email: '',
+    password: '',
+    password_confirmation: '',
   })
 
   const handleInputChange = (e) => {
@@ -53,7 +53,8 @@ const Register = () => {
 
     try {
       const { data: response } = await execute({ data })
-      navigate('/')
+      localStorage.setItem('token', response.data.token)
+      navigate('/dashboard')
     } catch (error) {
       console.log(error)
     }
@@ -74,6 +75,7 @@ const Register = () => {
                       <CIcon icon={cilUser} />
                     </CInputGroupText>
                     <CFormInput
+                      name="name"
                       placeholder="Username"
                       autoComplete="username"
                       value={formData.name}
@@ -83,6 +85,7 @@ const Register = () => {
                   <CInputGroup className="mb-3">
                     <CInputGroupText>@</CInputGroupText>
                     <CFormInput
+                      name="email"
                       placeholder="Email"
                       autoComplete="email"
                       value={formData.email}
@@ -94,6 +97,7 @@ const Register = () => {
                       <CIcon icon={cilLockLocked} />
                     </CInputGroupText>
                     <CFormInput
+                      name="password"
                       type="password"
                       placeholder="Password"
                       autoComplete="new-password"
@@ -106,6 +110,7 @@ const Register = () => {
                       <CIcon icon={cilLockLocked} />
                     </CInputGroupText>
                     <CFormInput
+                      name="password_confirmation"
                       type="password"
                       placeholder="Repeat password"
                       autoComplete="new-password"
