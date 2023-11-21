@@ -40,6 +40,16 @@ const Tables = () => {
     fetchFirms()
   }, [])
 
+  const parseDate = (dateString) => {
+    const date = new Date(dateString)
+
+    const day = date.getDate()
+    const month = date.getMonth() + 1
+    const year = date.getFullYear()
+
+    return `${day}/${month}/${year}`
+  }
+
   // const handleResponse = () => {
   //   if (!error) {
   //     setFirms(data)
@@ -66,29 +76,34 @@ const Tables = () => {
                 <CTableHead>
                   <CTableRow>
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Organization</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Id XML</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Tipo Documento</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Organization</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Sistema</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Fecha Firma</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Actions</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Firmante</CTableHeaderCell>
+                    <CTableHeaderCell scope="col">Email Firmante</CTableHeaderCell>
+                    {/* <CTableHeaderCell scope="col">Actions</CTableHeaderCell> */}
                   </CTableRow>
                 </CTableHead>
                 <CTableBody>
                   {firms.map((firm) => (
                     <CTableRow key={firm.id}>
                       <CTableHeaderCell scope="row">{firm.id}</CTableHeaderCell>
-                      <CTableDataCell>{firm.organization_id}</CTableDataCell>
                       <CTableDataCell>{firm.id_xml}</CTableDataCell>
                       <CTableDataCell>{firm.document_type}</CTableDataCell>
-                      <CTableDataCell>{firm.date_time}</CTableDataCell>
-                      <CTableDataCell>
+                      <CTableDataCell>{firm.organization.name}</CTableDataCell>
+                      <CTableDataCell>{firm.organization.sistem}</CTableDataCell>
+                      <CTableDataCell>{parseDate(firm.created_at)}</CTableDataCell>
+                      <CTableDataCell>{firm.signature}</CTableDataCell>
+                      <CTableDataCell>{firm.signature_email}</CTableDataCell>
+                      {/* <CTableDataCell>
                         <div className="d-grid gap-2 d-md-flex">
                           <CButton color="primary" size="sm">
-                            {/* <CIcon icon={cilPencil} customClassName="nav-icon" size={'sm'} /> */}
                             show
                           </CButton>
                         </div>
-                      </CTableDataCell>
+                      </CTableDataCell> */}
                     </CTableRow>
                   ))}
                 </CTableBody>

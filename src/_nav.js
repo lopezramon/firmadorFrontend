@@ -28,12 +28,12 @@ const _nav = [
     to: '/users',
     icon: <CIcon icon={cilPeople} customClassName="nav-icon" />,
   },
-  {
-    component: CNavItem,
-    name: 'Log Firmas',
-    to: '/log-firms',
-    icon: <CIcon icon={cilLayers} customClassName="nav-icon" />,
-  },
+  // {
+  //   component: CNavItem,
+  //   name: 'Log Firmas',
+  //   to: '/log-firms',
+  //   icon: <CIcon icon={cilLayers} customClassName="nav-icon" />,
+  // },
 ]
 
 export default _nav

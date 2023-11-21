@@ -73,6 +73,14 @@ const Tables = () => {
   //   handleResponse()
   // }
 
+  const isActive = (value) => {
+    return value ? 'Activo' : 'Inactivo'
+  }
+
+  const isUser = (value) => {
+    return value ? value : 'No User'
+  }
+
   const handleDelete = async (id) => {
     try {
       const response = await execute({
@@ -105,7 +113,6 @@ const Tables = () => {
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Rut</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Email</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Status</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Sistem</CTableHeaderCell>
                     <CTableHeaderCell scope="col">User</CTableHeaderCell>
@@ -118,16 +125,15 @@ const Tables = () => {
                       <CTableHeaderCell scope="row">{organization.id}</CTableHeaderCell>
                       <CTableDataCell>{organization.name}</CTableDataCell>
                       <CTableDataCell>{organization.rut}</CTableDataCell>
-                      <CTableDataCell>{organization.email}</CTableDataCell>
-                      <CTableDataCell>{organization.status}</CTableDataCell>
+                      <CTableDataCell>{isActive(organization.status)}</CTableDataCell>
                       <CTableDataCell>{organization.sistem}</CTableDataCell>
-                      <CTableDataCell>{organization.user?.name}</CTableDataCell>
+                      <CTableDataCell>{isUser(organization.user?.name)}</CTableDataCell>
                       <CTableDataCell>
                         <div className="d-grid gap-2 d-md-flex">
                           <CButton
                             color="primary"
                             size="sm"
-                            onClick={() => handleEdit(organization)}
+                            onClick={() => handleEdit(organization.id)}
                           >
                             Edit
                           </CButton>
